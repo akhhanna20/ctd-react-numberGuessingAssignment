@@ -4,6 +4,15 @@ import GuessMessage from "./GuessMessage";
 import GameOver from "./GameOver";
 
 const NumberGuessingGame = () => {
+  /**
+   *
+   * Returns a random integer number from 1-100 inclusive
+   */
+  function getRandomNumber() {
+    return Math.floor(Math.random() * 100) + 1;
+  }
+
+  const MAX_ATTEMPTS = 5;
   const [numberToGuess, setNumberToGuess] = useState(getRandomNumber());
   const [numberOfGuesses, setNumberOfGuesses] = useState(0);
   const [latestGuess, setLatestGuess] = useState(null);
@@ -40,15 +49,5 @@ const NumberGuessingGame = () => {
     </div>
   );
 };
-
-/**
- *
- * Returns a random integer number from 1-100 inclusive
- */
-function getRandomNumber() {
-  return Math.floor(Math.random() * 100) + 1;
-}
-
-const MAX_ATTEMPTS = 5;
 
 export default NumberGuessingGame;
