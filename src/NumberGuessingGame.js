@@ -4,32 +4,37 @@ import GuessMessage from "./GuessMessage";
 import GameOver from "./GameOver";
 
 const NumberGuessingGame = () => {
-  /**
-   *
-   * Returns a random integer number from 1-100 inclusive
-   */
+  const initialGuessData = {
+    numberToGuess: getRandomNumber(),
+    numberOfGuesses: 0,
+    latestGuess: null,
+  };
+  // Returns a random integer number from 1-100 inclusive
   function getRandomNumber() {
     return Math.floor(Math.random() * 100) + 1;
   }
-
   const MAX_ATTEMPTS = 5;
-  const [numberToGuess, setNumberToGuess] = useState(getRandomNumber());
-  const [numberOfGuesses, setNumberOfGuesses] = useState(0);
-  const [latestGuess, setLatestGuess] = useState(null);
+
+  // When you have similar and many related states
+  //you could create a unique state with an object shape:
+  const [guessData, setGuessData] = useState(initialGuessData);
 
   const handleGuess = (guess) => {
-    setLatestGuess(Number(guess));
-    setNumberOfGuesses(numberOfGuesses + 1);
+    setGuessData({
+      ...guessData,
+      latestGuess: Number(guess),
+      numberOfGuesses: guessData.numberOfGuesses + 1,
+    });
   };
+
   const handleReset = () => {
-    setNumberToGuess(getRandomNumber());
-    setNumberOfGuesses(0);
-    setLatestGuess(null);
+    setGuessData(initialGuessData);
   };
 
-  const isCorrectGuess = latestGuess === numberToGuess;
+  const isCorrectGuess = guessData.latestGuess === guessData.numberToGuess;
 
-  const isGameOver = isCorrectGuess || numberOfGuesses === MAX_ATTEMPTS;
+  const isGameOver =
+    isCorrectGuess || guessData.numberOfGuesses === MAX_ATTEMPTS;
 
   return (
     <div>
@@ -41,9 +46,9 @@ const NumberGuessingGame = () => {
       {isGameOver && <GameOver hasWon={isCorrectGuess} onReset={handleReset} />}
       {!isGameOver && (
         <GuessMessage
-          guess={latestGuess}
-          numberToGuess={numberToGuess}
-          numberOfGuesses={numberOfGuesses}
+          guess={guessData.latestGuess}
+          numberToGuess={guessData.numberToGuess}
+          numberOfGuesses={guessData.numberOfGuesses}
         />
       )}
     </div>
